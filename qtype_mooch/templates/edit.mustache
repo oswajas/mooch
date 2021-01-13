@@ -1,0 +1,83 @@
+{{!
+    @template   qtype_mooch/edit
+    @package    qtype
+    @subpackage mooch
+    @copyright  2021 Oswald Jaskolla
+    @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+    @see qtype_mooch_edit_form::definition_inner()
+
+    Template to edit a chess question.
+
+    Classes required for JS:
+
+      * none
+
+    Data attributes required for JS:
+    
+      * none
+
+    Context variables required for this template:
+    
+      * uid
+        A unique identifier that separates HTML elements of this question from
+        HTML elements of other questions displayed on the same page.
+}}
+<div data-qtype-mooch-id-preview-board="{{uid}}" class="chesswidget">
+	<table data-qtype-mooch-id-dragbox="{{uid}}" class="dragbox">
+		<tbody>
+			<tr>
+				<td><button data-chessground-piece-color="white"
+						data-chessground-piece-role="pawn" class="piece white pawn">♙</button></td>
+				<td><button data-chessground-piece-color="black"
+						data-chessground-piece-role="pawn" class="piece black pawn">♟</button></td>
+			</tr>
+			<tr>
+				<td><button data-chessground-piece-color="white"
+						data-chessground-piece-role="knight" class="piece white knight">♘</button></td>
+				<td><button data-chessground-piece-color="black"
+						data-chessground-piece-role="knight" class="piece black knight">♞</button></td>
+			</tr>
+			<tr>
+				<td><button data-chessground-piece-color="white"
+						data-chessground-piece-role="bishop" class="piece white bishop">♗</button></td>
+				<td><button data-chessground-piece-color="black"
+						data-chessground-piece-role="bishop" class="piece black bishop">♝</button></td>
+			</tr>
+			<tr>
+				<td><button data-chessground-piece-color="white"
+						data-chessground-piece-role="rook" class="piece white rook">♖</button></td>
+				<td><button data-chessground-piece-color="black"
+						data-chessground-piece-role="rook" class="piece black rook">♜</button></td>
+			</tr>
+			<tr>
+				<td><button data-chessground-piece-color="white"
+						data-chessground-piece-role="queen" class="piece white queen">♕</button></td>
+				<td><button data-chessground-piece-color="black"
+						data-chessground-piece-role="queen" class="piece black queen">♛</button></td>
+			</tr>
+			<tr>
+				<td><button data-chessground-piece-color="white"
+						data-chessground-piece-role="king" class="piece white king">♔</button></td>
+				<td><button data-chessground-piece-color="black"
+						data-chessground-piece-role="king" class="piece black king">♚</button></td>
+			</tr>
+			<tr>
+				<td colspan="2"><button class="btn btn-secondary" title="{{#str}}clearboard, qtype_mooch{{/str}}"
+						data-qtype-mooch-control="clear">
+						<span class="button_icon">⎚</span> {{#str}}clearboard, qtype_mooch{{/str}}
+					</button></td>
+			</tr>
+			<tr>
+				<td colspan="2"><button class="btn btn-secondary" title="{{#str}}reset, moodle{{/str}}"
+						data-qtype-mooch-control="reset">
+						<span class="button_icon">⎌</span> {{#str}}reset, moodle{{/str}}
+					</button></td>
+			</tr>
+		</tbody>
+	</table>
+	<fieldset data-qtype-mooch-id-turn-picker="{{uid}}" class="turn-picker">
+		<legend>{{#str}}sidetomove, qtype_mooch{{/str}}</legend>
+		<label><input type="radio" name="type-chess-turn" value="w">&nbsp;{{#str}}white, qtype_mooch{{/str}}</label>
+		<label><input type="radio" name="type-chess-turn" value="b">&nbsp;{{#str}}black, qtype_mooch{{/str}}</label>
+	</fieldset>
+</div>

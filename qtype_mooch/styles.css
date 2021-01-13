@@ -1,0 +1,640 @@
+/**
+ * Stylesheet for the chessboard widget.
+ *
+ * @package    qtype
+ * @subpackage mooch
+ * @copyright  2021 Oswald Jaskolla
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/* Editing form. */
+body#page-question-type-chess div[id^=fgroup_id_][id*=answeroptions_] {
+    background: #eee;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border: 1px solid #bbb;
+    border-bottom: 0;
+}
+
+body#page-question-type-chess div[id^=fitem_id_][id*=fraction_] {
+    background: #eee;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border: 1px solid #bbb;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+body#page-question-type-chess div[id^=fitem_id_][id*=feedback_] {
+    background: #eee;
+    margin-bottom: 2em;
+    margin-top: 0;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border: 1px solid #bbb;
+    border-top: 0;
+}
+
+body#page-question-type-chess div[id^=fgroup_id_][id*=answeroptions_] label[for^='id_answer_'] {
+    position: absolute;
+    left: -10000px;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+
+.chesswidget {
+	display: grid;
+	grid-template-columns: 24rem auto auto;
+    grid-template-rows: 24rem auto;
+    margin-top: 1rem;
+}
+
+.chesswidget .cg-wrap {
+	grid-column: 1 / span 1;
+	grid-row: 1 / span 1;
+    position: relative;
+    margin-bottom: 2.5rem;
+    margin-right: 2.5rem;
+}
+
+.chesswidget .dragbox {
+    grid-column: 2 / span 1;
+    grid-row: 1 / span 1;
+}
+
+.chesswidget .move-marker {
+    grid-column: 2 / span 2;
+    grid-row: 1 / span 1;
+    width: 1rem;
+    height: 1rem;
+    border: 0.0625rem solid black;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.chesswidget .turn-picker {
+    grid-column: 3 / span 1;
+    grid-row: 1 / span 1;
+}
+
+.chesswidget .resetbutton {
+    grid-column: 1 / span 1;
+    grid-row: 2 / span 1;
+}
+
+.chesswidget .move-marker.white {
+	background-color: white;
+	color: white;
+}
+
+.chesswidget .move-marker.black {
+    background-color: black;
+    color: black;
+}
+
+.chesswidget .dragbox td {
+	text-align: center;
+}
+
+.chesswidget .dragbox .piece,
+.chesswidget .promotionbox .piece {
+	width: 2.75rem;
+	height: 2.75rem;
+	background-size: cover;
+	border: 0;
+	color: transparent;
+	background-color: transparent;
+}
+
+.chesswidget .dragbox .btn {
+    width: 100%;
+}
+
+cg-helper {
+	position: absolute;
+	width: 12.5%;
+	padding-bottom: 12.5%;
+	display: table;
+	bottom: 0;
+}
+
+cg-container {
+	position: absolute;
+	width: 800%;
+	height: 800%;
+	display: block;
+	bottom: 0;
+}
+
+cg-board {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	line-height: 0;
+	background-size: cover;
+	cursor: pointer;
+}
+
+cg-board square {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 12.5%;
+	height: 12.5%;
+	pointer-events: none;
+}
+
+cg-board square.move-dest {
+	background: radial-gradient(rgba(20, 85, 30, 0.5) 22%, #208530 0,
+		rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0);
+	pointer-events: auto;
+}
+
+cg-board square.premove-dest {
+	background: radial-gradient(rgba(20, 30, 85, 0.5) 22%, #203085 0,
+		rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0);
+}
+
+cg-board square.oc.move-dest {
+	background: radial-gradient(transparent 0%, transparent 80%, rgba(20, 85, 0, 0.3)
+		80%);
+}
+
+cg-board square.oc.premove-dest {
+	background: radial-gradient(transparent 0%, transparent 80%, rgba(20, 30, 85, 0.2)
+		80%);
+}
+
+cg-board square.move-dest:hover {
+	background: rgba(20, 85, 30, 0.3);
+}
+
+cg-board square.premove-dest:hover {
+	background: rgba(20, 30, 85, 0.2);
+}
+
+cg-board square.last-move {
+	will-change: transform;
+	background-color: rgba(155, 199, 0, 0.41);
+}
+
+cg-board square.selected {
+	background-color: rgba(20, 85, 30, 0.5);
+}
+
+cg-board square.check {
+	background: radial-gradient(ellipse at center, rgba(255, 0, 0, 1) 0%,
+		rgba(231, 0, 0, 1) 25%, rgba(169, 0, 0, 0) 89%, rgba(158, 0, 0, 0)
+		100%);
+}
+
+cg-board square.current-premove {
+	background-color: rgba(20, 30, 85, 0.5);
+}
+
+.cg-wrap piece {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 12.5%;
+	height: 12.5%;
+	background-size: cover;
+	z-index: 2;
+	will-change: transform;
+	pointer-events: none;
+}
+
+cg-board piece.dragging {
+	cursor: move;
+	z-index: 9;
+}
+
+cg-board piece.anim {
+	z-index: 8;
+}
+
+cg-board piece.fading {
+	z-index: 1;
+	opacity: 0.5;
+}
+
+.cg-wrap square.move-dest:hover {
+	background-color: rgba(20, 85, 30, 0.3);
+}
+
+.cg-wrap piece.ghost {
+	opacity: 0.3;
+}
+
+.cg-wrap svg {
+	overflow: hidden;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index: 2;
+	opacity: 0.6;
+}
+
+.cg-wrap svg image {
+	opacity: 0.5;
+}
+
+.cg-wrap coords {
+	position: absolute;
+	display: flex;
+	pointer-events: none;
+	opacity: 0.8;
+	font-size: 1.5rem;
+}
+
+.cg-wrap coords.ranks {
+	right: -1.2rem;
+	top: -0.5rem;
+	flex-flow: column-reverse;
+	height: 100%;
+	width: 0.75rem;
+}
+
+.cg-wrap coords.ranks.black {
+	flex-flow: column;
+}
+
+.cg-wrap coords.files {
+	bottom: -1rem;
+	left: 0;
+	flex-flow: row;
+	width: 100%;
+	height: 1rem;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.cg-wrap coords.files.black {
+	flex-flow: row-reverse;
+}
+
+.cg-wrap coords coord {
+	flex: 1 1 auto;
+}
+
+.cg-wrap coords.ranks coord {
+	transform: translateY(39%);
+}
+
+.chesswidget .cg-wrap {background-image: url('/question/type/mooch/pix/board.svg');}
+.chesswidget.board_blue .cg-wrap {background-image: url('/question/type/mooch/pix/theme/boards/blue.svg');}
+.chesswidget.board_brown .cg-wrap {background-image: url('/question/type/mooch/pix/theme/boards/brown.svg');}
+.chesswidget.board_green .cg-wrap {background-image: url('/question/type/mooch/pix/theme/boards/green.svg');}
+.chesswidget.board_ic .cg-wrap {background-image: url('/question/type/mooch/pix/theme/boards/ic.svg');}
+.chesswidget.board_purple .cg-wrap {background-image: url('/question/type/mooch/pix/theme/boards/purple.svg');}
+
+.chesswidget .pawn.white {background-image: url('/question/type/mooch/pix/pieces/wP.svg');}
+.chesswidget .bishop.white {background-image: url('/question/type/mooch/pix/pieces/wB.svg');}
+.chesswidget .knight.white {background-image: url('/question/type/mooch/pix/pieces/wN.svg');}
+.chesswidget .rook.white {background-image: url('/question/type/mooch/pix/pieces/wR.svg');}
+.chesswidget .queen.white {background-image: url('/question/type/mooch/pix/pieces/wQ.svg');}
+.chesswidget .king.white {background-image: url('/question/type/mooch/pix/pieces/wK.svg');}
+.chesswidget .pawn.black {background-image: url('/question/type/mooch/pix/pieces/bP.svg');}
+.chesswidget .bishop.black {background-image: url('/question/type/mooch/pix/pieces/bB.svg');}
+.chesswidget .knight.black {background-image: url('/question/type/mooch/pix/pieces/bN.svg');}
+.chesswidget .rook.black {background-image: url('/question/type/mooch/pix/pieces/bR.svg');}
+.chesswidget .queen.black {background-image: url('/question/type/mooch/pix/pieces/bQ.svg');}
+.chesswidget .king.black {background-image: url('/question/type/mooch/pix/pieces/bK.svg');}
+.chesswidget.pieces_alpha .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/wP.svg')}
+.chesswidget.pieces_alpha .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/wN.svg')}
+.chesswidget.pieces_alpha .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/wB.svg')}
+.chesswidget.pieces_alpha .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/wR.svg')}
+.chesswidget.pieces_alpha .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/wQ.svg')}
+.chesswidget.pieces_alpha .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/wK.svg')}
+.chesswidget.pieces_alpha .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/bP.svg')}
+.chesswidget.pieces_alpha .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/bN.svg')}
+.chesswidget.pieces_alpha .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/bB.svg')}
+.chesswidget.pieces_alpha .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/bR.svg')}
+.chesswidget.pieces_alpha .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/bQ.svg')}
+.chesswidget.pieces_alpha .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/alpha/bK.svg')}
+.chesswidget.pieces_california .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/california/wP.svg')}
+.chesswidget.pieces_california .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/california/wN.svg')}
+.chesswidget.pieces_california .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/california/wB.svg')}
+.chesswidget.pieces_california .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/california/wR.svg')}
+.chesswidget.pieces_california .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/california/wQ.svg')}
+.chesswidget.pieces_california .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/california/wK.svg')}
+.chesswidget.pieces_california .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/california/bP.svg')}
+.chesswidget.pieces_california .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/california/bN.svg')}
+.chesswidget.pieces_california .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/california/bB.svg')}
+.chesswidget.pieces_california .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/california/bR.svg')}
+.chesswidget.pieces_california .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/california/bQ.svg')}
+.chesswidget.pieces_california .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/california/bK.svg')}
+.chesswidget.pieces_cardinal .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/wP.svg')}
+.chesswidget.pieces_cardinal .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/wN.svg')}
+.chesswidget.pieces_cardinal .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/wB.svg')}
+.chesswidget.pieces_cardinal .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/wR.svg')}
+.chesswidget.pieces_cardinal .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/wQ.svg')}
+.chesswidget.pieces_cardinal .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/wK.svg')}
+.chesswidget.pieces_cardinal .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/bP.svg')}
+.chesswidget.pieces_cardinal .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/bN.svg')}
+.chesswidget.pieces_cardinal .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/bB.svg')}
+.chesswidget.pieces_cardinal .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/bR.svg')}
+.chesswidget.pieces_cardinal .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/bQ.svg')}
+.chesswidget.pieces_cardinal .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/cardinal/bK.svg')}
+.chesswidget.pieces_cburnett .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/wP.svg')}
+.chesswidget.pieces_cburnett .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/wN.svg')}
+.chesswidget.pieces_cburnett .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/wB.svg')}
+.chesswidget.pieces_cburnett .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/wR.svg')}
+.chesswidget.pieces_cburnett .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/wQ.svg')}
+.chesswidget.pieces_cburnett .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/wK.svg')}
+.chesswidget.pieces_cburnett .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/bP.svg')}
+.chesswidget.pieces_cburnett .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/bN.svg')}
+.chesswidget.pieces_cburnett .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/bB.svg')}
+.chesswidget.pieces_cburnett .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/bR.svg')}
+.chesswidget.pieces_cburnett .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/bQ.svg')}
+.chesswidget.pieces_cburnett .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/cburnett/bK.svg')}
+.chesswidget.pieces_chess7 .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/wP.svg')}
+.chesswidget.pieces_chess7 .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/wN.svg')}
+.chesswidget.pieces_chess7 .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/wB.svg')}
+.chesswidget.pieces_chess7 .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/wR.svg')}
+.chesswidget.pieces_chess7 .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/wQ.svg')}
+.chesswidget.pieces_chess7 .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/wK.svg')}
+.chesswidget.pieces_chess7 .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/bP.svg')}
+.chesswidget.pieces_chess7 .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/bN.svg')}
+.chesswidget.pieces_chess7 .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/bB.svg')}
+.chesswidget.pieces_chess7 .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/bR.svg')}
+.chesswidget.pieces_chess7 .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/bQ.svg')}
+.chesswidget.pieces_chess7 .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/chess7/bK.svg')}
+.chesswidget.pieces_chessnut .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/wP.svg')}
+.chesswidget.pieces_chessnut .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/wN.svg')}
+.chesswidget.pieces_chessnut .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/wB.svg')}
+.chesswidget.pieces_chessnut .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/wR.svg')}
+.chesswidget.pieces_chessnut .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/wQ.svg')}
+.chesswidget.pieces_chessnut .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/wK.svg')}
+.chesswidget.pieces_chessnut .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/bP.svg')}
+.chesswidget.pieces_chessnut .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/bN.svg')}
+.chesswidget.pieces_chessnut .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/bB.svg')}
+.chesswidget.pieces_chessnut .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/bR.svg')}
+.chesswidget.pieces_chessnut .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/bQ.svg')}
+.chesswidget.pieces_chessnut .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/chessnut/bK.svg')}
+.chesswidget.pieces_companion .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/companion/wP.svg')}
+.chesswidget.pieces_companion .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/companion/wN.svg')}
+.chesswidget.pieces_companion .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/companion/wB.svg')}
+.chesswidget.pieces_companion .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/companion/wR.svg')}
+.chesswidget.pieces_companion .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/companion/wQ.svg')}
+.chesswidget.pieces_companion .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/companion/wK.svg')}
+.chesswidget.pieces_companion .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/companion/bP.svg')}
+.chesswidget.pieces_companion .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/companion/bN.svg')}
+.chesswidget.pieces_companion .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/companion/bB.svg')}
+.chesswidget.pieces_companion .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/companion/bR.svg')}
+.chesswidget.pieces_companion .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/companion/bQ.svg')}
+.chesswidget.pieces_companion .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/companion/bK.svg')}
+.chesswidget.pieces_dubrovny .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/wP.svg')}
+.chesswidget.pieces_dubrovny .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/wN.svg')}
+.chesswidget.pieces_dubrovny .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/wB.svg')}
+.chesswidget.pieces_dubrovny .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/wR.svg')}
+.chesswidget.pieces_dubrovny .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/wQ.svg')}
+.chesswidget.pieces_dubrovny .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/wK.svg')}
+.chesswidget.pieces_dubrovny .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/bP.svg')}
+.chesswidget.pieces_dubrovny .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/bN.svg')}
+.chesswidget.pieces_dubrovny .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/bB.svg')}
+.chesswidget.pieces_dubrovny .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/bR.svg')}
+.chesswidget.pieces_dubrovny .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/bQ.svg')}
+.chesswidget.pieces_dubrovny .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/dubrovny/bK.svg')}
+.chesswidget.pieces_fantasy .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/wP.svg')}
+.chesswidget.pieces_fantasy .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/wN.svg')}
+.chesswidget.pieces_fantasy .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/wB.svg')}
+.chesswidget.pieces_fantasy .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/wR.svg')}
+.chesswidget.pieces_fantasy .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/wQ.svg')}
+.chesswidget.pieces_fantasy .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/wK.svg')}
+.chesswidget.pieces_fantasy .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/bP.svg')}
+.chesswidget.pieces_fantasy .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/bN.svg')}
+.chesswidget.pieces_fantasy .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/bB.svg')}
+.chesswidget.pieces_fantasy .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/bR.svg')}
+.chesswidget.pieces_fantasy .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/bQ.svg')}
+.chesswidget.pieces_fantasy .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/fantasy/bK.svg')}
+.chesswidget.pieces_fresca .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/wP.svg')}
+.chesswidget.pieces_fresca .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/wN.svg')}
+.chesswidget.pieces_fresca .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/wB.svg')}
+.chesswidget.pieces_fresca .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/wR.svg')}
+.chesswidget.pieces_fresca .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/wQ.svg')}
+.chesswidget.pieces_fresca .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/wK.svg')}
+.chesswidget.pieces_fresca .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/bP.svg')}
+.chesswidget.pieces_fresca .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/bN.svg')}
+.chesswidget.pieces_fresca .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/bB.svg')}
+.chesswidget.pieces_fresca .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/bR.svg')}
+.chesswidget.pieces_fresca .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/bQ.svg')}
+.chesswidget.pieces_fresca .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/fresca/bK.svg')}
+.chesswidget.pieces_gioco .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/wP.svg')}
+.chesswidget.pieces_gioco .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/wN.svg')}
+.chesswidget.pieces_gioco .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/wB.svg')}
+.chesswidget.pieces_gioco .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/wR.svg')}
+.chesswidget.pieces_gioco .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/wQ.svg')}
+.chesswidget.pieces_gioco .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/wK.svg')}
+.chesswidget.pieces_gioco .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/bP.svg')}
+.chesswidget.pieces_gioco .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/bN.svg')}
+.chesswidget.pieces_gioco .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/bB.svg')}
+.chesswidget.pieces_gioco .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/bR.svg')}
+.chesswidget.pieces_gioco .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/bQ.svg')}
+.chesswidget.pieces_gioco .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/gioco/bK.svg')}
+.chesswidget.pieces_governor .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/governor/wP.svg')}
+.chesswidget.pieces_governor .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/governor/wN.svg')}
+.chesswidget.pieces_governor .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/governor/wB.svg')}
+.chesswidget.pieces_governor .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/governor/wR.svg')}
+.chesswidget.pieces_governor .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/governor/wQ.svg')}
+.chesswidget.pieces_governor .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/governor/wK.svg')}
+.chesswidget.pieces_governor .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/governor/bP.svg')}
+.chesswidget.pieces_governor .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/governor/bN.svg')}
+.chesswidget.pieces_governor .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/governor/bB.svg')}
+.chesswidget.pieces_governor .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/governor/bR.svg')}
+.chesswidget.pieces_governor .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/governor/bQ.svg')}
+.chesswidget.pieces_governor .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/governor/bK.svg')}
+.chesswidget.pieces_icpieces .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/wP.svg')}
+.chesswidget.pieces_icpieces .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/wN.svg')}
+.chesswidget.pieces_icpieces .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/wB.svg')}
+.chesswidget.pieces_icpieces .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/wR.svg')}
+.chesswidget.pieces_icpieces .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/wQ.svg')}
+.chesswidget.pieces_icpieces .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/wK.svg')}
+.chesswidget.pieces_icpieces .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/bP.svg')}
+.chesswidget.pieces_icpieces .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/bN.svg')}
+.chesswidget.pieces_icpieces .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/bB.svg')}
+.chesswidget.pieces_icpieces .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/bR.svg')}
+.chesswidget.pieces_icpieces .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/bQ.svg')}
+.chesswidget.pieces_icpieces .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/icpieces/bK.svg')}
+.chesswidget.pieces_kosal .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/wP.svg')}
+.chesswidget.pieces_kosal .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/wN.svg')}
+.chesswidget.pieces_kosal .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/wB.svg')}
+.chesswidget.pieces_kosal .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/wR.svg')}
+.chesswidget.pieces_kosal .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/wQ.svg')}
+.chesswidget.pieces_kosal .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/wK.svg')}
+.chesswidget.pieces_kosal .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/bP.svg')}
+.chesswidget.pieces_kosal .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/bN.svg')}
+.chesswidget.pieces_kosal .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/bB.svg')}
+.chesswidget.pieces_kosal .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/bR.svg')}
+.chesswidget.pieces_kosal .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/bQ.svg')}
+.chesswidget.pieces_kosal .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/kosal/bK.svg')}
+.chesswidget.pieces_leipzig .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/wP.svg')}
+.chesswidget.pieces_leipzig .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/wN.svg')}
+.chesswidget.pieces_leipzig .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/wB.svg')}
+.chesswidget.pieces_leipzig .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/wR.svg')}
+.chesswidget.pieces_leipzig .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/wQ.svg')}
+.chesswidget.pieces_leipzig .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/wK.svg')}
+.chesswidget.pieces_leipzig .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/bP.svg')}
+.chesswidget.pieces_leipzig .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/bN.svg')}
+.chesswidget.pieces_leipzig .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/bB.svg')}
+.chesswidget.pieces_leipzig .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/bR.svg')}
+.chesswidget.pieces_leipzig .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/bQ.svg')}
+.chesswidget.pieces_leipzig .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/leipzig/bK.svg')}
+.chesswidget.pieces_letter .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/letter/wP.svg')}
+.chesswidget.pieces_letter .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/letter/wN.svg')}
+.chesswidget.pieces_letter .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/letter/wB.svg')}
+.chesswidget.pieces_letter .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/letter/wR.svg')}
+.chesswidget.pieces_letter .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/letter/wQ.svg')}
+.chesswidget.pieces_letter .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/letter/wK.svg')}
+.chesswidget.pieces_letter .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/letter/bP.svg')}
+.chesswidget.pieces_letter .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/letter/bN.svg')}
+.chesswidget.pieces_letter .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/letter/bB.svg')}
+.chesswidget.pieces_letter .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/letter/bR.svg')}
+.chesswidget.pieces_letter .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/letter/bQ.svg')}
+.chesswidget.pieces_letter .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/letter/bK.svg')}
+.chesswidget.pieces_libra .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/libra/wP.svg')}
+.chesswidget.pieces_libra .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/libra/wN.svg')}
+.chesswidget.pieces_libra .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/libra/wB.svg')}
+.chesswidget.pieces_libra .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/libra/wR.svg')}
+.chesswidget.pieces_libra .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/libra/wQ.svg')}
+.chesswidget.pieces_libra .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/libra/wK.svg')}
+.chesswidget.pieces_libra .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/libra/bP.svg')}
+.chesswidget.pieces_libra .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/libra/bN.svg')}
+.chesswidget.pieces_libra .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/libra/bB.svg')}
+.chesswidget.pieces_libra .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/libra/bR.svg')}
+.chesswidget.pieces_libra .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/libra/bQ.svg')}
+.chesswidget.pieces_libra .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/libra/bK.svg')}
+.chesswidget.pieces_maestro .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/wP.svg')}
+.chesswidget.pieces_maestro .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/wN.svg')}
+.chesswidget.pieces_maestro .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/wB.svg')}
+.chesswidget.pieces_maestro .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/wR.svg')}
+.chesswidget.pieces_maestro .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/wQ.svg')}
+.chesswidget.pieces_maestro .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/wK.svg')}
+.chesswidget.pieces_maestro .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/bP.svg')}
+.chesswidget.pieces_maestro .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/bN.svg')}
+.chesswidget.pieces_maestro .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/bB.svg')}
+.chesswidget.pieces_maestro .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/bR.svg')}
+.chesswidget.pieces_maestro .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/bQ.svg')}
+.chesswidget.pieces_maestro .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/maestro/bK.svg')}
+.chesswidget.pieces_merida .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/merida/wP.svg')}
+.chesswidget.pieces_merida .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/merida/wN.svg')}
+.chesswidget.pieces_merida .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/merida/wB.svg')}
+.chesswidget.pieces_merida .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/merida/wR.svg')}
+.chesswidget.pieces_merida .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/merida/wQ.svg')}
+.chesswidget.pieces_merida .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/merida/wK.svg')}
+.chesswidget.pieces_merida .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/merida/bP.svg')}
+.chesswidget.pieces_merida .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/merida/bN.svg')}
+.chesswidget.pieces_merida .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/merida/bB.svg')}
+.chesswidget.pieces_merida .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/merida/bR.svg')}
+.chesswidget.pieces_merida .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/merida/bQ.svg')}
+.chesswidget.pieces_merida .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/merida/bK.svg')}
+.chesswidget.pieces_pirouetti .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/wP.svg')}
+.chesswidget.pieces_pirouetti .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/wN.svg')}
+.chesswidget.pieces_pirouetti .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/wB.svg')}
+.chesswidget.pieces_pirouetti .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/wR.svg')}
+.chesswidget.pieces_pirouetti .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/wQ.svg')}
+.chesswidget.pieces_pirouetti .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/wK.svg')}
+.chesswidget.pieces_pirouetti .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/bP.svg')}
+.chesswidget.pieces_pirouetti .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/bN.svg')}
+.chesswidget.pieces_pirouetti .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/bB.svg')}
+.chesswidget.pieces_pirouetti .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/bR.svg')}
+.chesswidget.pieces_pirouetti .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/bQ.svg')}
+.chesswidget.pieces_pirouetti .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/pirouetti/bK.svg')}
+.chesswidget.pieces_pixel .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/wP.svg')}
+.chesswidget.pieces_pixel .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/wN.svg')}
+.chesswidget.pieces_pixel .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/wB.svg')}
+.chesswidget.pieces_pixel .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/wR.svg')}
+.chesswidget.pieces_pixel .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/wQ.svg')}
+.chesswidget.pieces_pixel .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/wK.svg')}
+.chesswidget.pieces_pixel .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/bP.svg')}
+.chesswidget.pieces_pixel .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/bN.svg')}
+.chesswidget.pieces_pixel .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/bB.svg')}
+.chesswidget.pieces_pixel .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/bR.svg')}
+.chesswidget.pieces_pixel .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/bQ.svg')}
+.chesswidget.pieces_pixel .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/pixel/bK.svg')}
+.chesswidget.pieces_reillycraig .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/wP.svg')}
+.chesswidget.pieces_reillycraig .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/wN.svg')}
+.chesswidget.pieces_reillycraig .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/wB.svg')}
+.chesswidget.pieces_reillycraig .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/wR.svg')}
+.chesswidget.pieces_reillycraig .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/wQ.svg')}
+.chesswidget.pieces_reillycraig .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/wK.svg')}
+.chesswidget.pieces_reillycraig .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/bP.svg')}
+.chesswidget.pieces_reillycraig .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/bN.svg')}
+.chesswidget.pieces_reillycraig .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/bB.svg')}
+.chesswidget.pieces_reillycraig .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/bR.svg')}
+.chesswidget.pieces_reillycraig .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/bQ.svg')}
+.chesswidget.pieces_reillycraig .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/reillycraig/bK.svg')}
+.chesswidget.pieces_riohacha .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/wP.svg')}
+.chesswidget.pieces_riohacha .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/wN.svg')}
+.chesswidget.pieces_riohacha .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/wB.svg')}
+.chesswidget.pieces_riohacha .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/wR.svg')}
+.chesswidget.pieces_riohacha .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/wQ.svg')}
+.chesswidget.pieces_riohacha .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/wK.svg')}
+.chesswidget.pieces_riohacha .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/bP.svg')}
+.chesswidget.pieces_riohacha .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/bN.svg')}
+.chesswidget.pieces_riohacha .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/bB.svg')}
+.chesswidget.pieces_riohacha .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/bR.svg')}
+.chesswidget.pieces_riohacha .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/bQ.svg')}
+.chesswidget.pieces_riohacha .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/riohacha/bK.svg')}
+.chesswidget.pieces_shapes .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/wP.svg')}
+.chesswidget.pieces_shapes .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/wN.svg')}
+.chesswidget.pieces_shapes .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/wB.svg')}
+.chesswidget.pieces_shapes .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/wR.svg')}
+.chesswidget.pieces_shapes .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/wQ.svg')}
+.chesswidget.pieces_shapes .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/wK.svg')}
+.chesswidget.pieces_shapes .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/bP.svg')}
+.chesswidget.pieces_shapes .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/bN.svg')}
+.chesswidget.pieces_shapes .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/bB.svg')}
+.chesswidget.pieces_shapes .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/bR.svg')}
+.chesswidget.pieces_shapes .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/bQ.svg')}
+.chesswidget.pieces_shapes .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/shapes/bK.svg')}
+.chesswidget.pieces_spatial .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/wP.svg')}
+.chesswidget.pieces_spatial .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/wN.svg')}
+.chesswidget.pieces_spatial .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/wB.svg')}
+.chesswidget.pieces_spatial .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/wR.svg')}
+.chesswidget.pieces_spatial .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/wQ.svg')}
+.chesswidget.pieces_spatial .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/wK.svg')}
+.chesswidget.pieces_spatial .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/bP.svg')}
+.chesswidget.pieces_spatial .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/bN.svg')}
+.chesswidget.pieces_spatial .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/bB.svg')}
+.chesswidget.pieces_spatial .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/bR.svg')}
+.chesswidget.pieces_spatial .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/bQ.svg')}
+.chesswidget.pieces_spatial .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/spatial/bK.svg')}
+.chesswidget.pieces_staunty .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/wP.svg')}
+.chesswidget.pieces_staunty .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/wN.svg')}
+.chesswidget.pieces_staunty .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/wB.svg')}
+.chesswidget.pieces_staunty .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/wR.svg')}
+.chesswidget.pieces_staunty .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/wQ.svg')}
+.chesswidget.pieces_staunty .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/wK.svg')}
+.chesswidget.pieces_staunty .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/bP.svg')}
+.chesswidget.pieces_staunty .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/bN.svg')}
+.chesswidget.pieces_staunty .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/bB.svg')}
+.chesswidget.pieces_staunty .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/bR.svg')}
+.chesswidget.pieces_staunty .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/bQ.svg')}
+.chesswidget.pieces_staunty .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/staunty/bK.svg')}
+.chesswidget.pieces_tatiana .pawn.white {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/wP.svg')}
+.chesswidget.pieces_tatiana .knight.white {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/wN.svg')}
+.chesswidget.pieces_tatiana .bishop.white {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/wB.svg')}
+.chesswidget.pieces_tatiana .rook.white {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/wR.svg')}
+.chesswidget.pieces_tatiana .queen.white {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/wQ.svg')}
+.chesswidget.pieces_tatiana .king.white {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/wK.svg')}
+.chesswidget.pieces_tatiana .pawn.black {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/bP.svg')}
+.chesswidget.pieces_tatiana .knight.black {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/bN.svg')}
+.chesswidget.pieces_tatiana .bishop.black {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/bB.svg')}
+.chesswidget.pieces_tatiana .rook.black {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/bR.svg')}
+.chesswidget.pieces_tatiana .queen.black {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/bQ.svg')}
+.chesswidget.pieces_tatiana .king.black {background-image:url('/question/type/mooch/pix/theme/pieces/tatiana/bK.svg')}
