@@ -4,7 +4,7 @@
  * Anything that cannot be expressed in JSON wil not be part of the clone.
  *
  * @param object The object to clone
- * @return The clone  
+ * @return The clone 
  */
 export function clone(object) {
     return JSON.parse(JSON.stringify(object));
@@ -17,7 +17,7 @@ export function clone(object) {
  * @param path String or array of strings. If an array is passed, each entry
  *  is treated as property of the previous entry. If a string is passed, it is
  *  split at "." into an array of strings and the function behaves as if that
- *  array was passed to the function.   
+ *  array was passed to the function.  
  */
 export function ensureProperty(obj, path) {
     if (typeof path == "string") {
@@ -32,7 +32,7 @@ export function ensureProperty(obj, path) {
 }
 
 /**
- * Sets a theme for the chessboard. 
+ * Sets a theme for the chessboard.
  *
  * @param element (HTMLElement) The element on which to set the theme
  * @param theme (object) THeme information
@@ -79,10 +79,10 @@ function normalizeMove(move) {
 
 /**
  * Create a Shape object for a move to pass to Chessground.
- * 
+ *
  * @param move (string) The move
  * @param color (string) The side that moved, either 'white' or 'black'
- * @return Shape that can be passed to chessground. 
+ * @return Shape that can be passed to chessground.
  */
 export function createChessgroundShape(move, color, brush) {
     move = normalizeMove(move);
@@ -118,7 +118,7 @@ export function createChessgroundShape(move, color, brush) {
  *
  * @param value The value to test for truth.
  * @return boolean Whether the value is considered true.
- */ 
+ */
 export function isTrue(value) {
     if (!value) {
         return false;
@@ -137,11 +137,11 @@ export function isTrue(value) {
         if (value.match(/^no$/i)) {
             return false;
         }
-        
+       
         if (value.match(/^[-+]*0*$/)) {
             return false;
         }
     }
-    
+   
     return true;
 }

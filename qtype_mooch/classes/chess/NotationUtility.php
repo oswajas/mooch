@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace qtype_mooch\chess;
 
@@ -12,15 +12,15 @@ class NotationUtility {
      */
     public static function validateFen($fen) {
         $parts = preg_split('/\s+/', trim($fen));
-        
+       
         if (count($parts) < 2) {
             return false;
         }
-        
+       
         if (preg_match('/^[wb]$/i', $parts[1]) === false) {
             return false;
         }
-        
+       
         $ranks = explode('/', $parts[0]);
         if (count($ranks) != 8) {
             return false;
@@ -41,21 +41,21 @@ class NotationUtility {
                 return false;
             }
         }
-        
+       
         return true;
     }
-    
+   
     /**
      * Check whether source and destination square and possibly promotion piece
      * can be extracted from a string.
-     * 
+     *
      * @param string $move
      * @return boolean
      */
     public static function validateMove(string $move) {
         return !empty(self::normalizeMove($move));
     }
-    
+   
     /**
      * Normalize a move.
      *

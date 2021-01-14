@@ -2,7 +2,7 @@
 
 /**
  * Definition of the qtype_mooch_renderer class.
- * 
+ *
  * @package    qtype
  * @subpackage mooch
  * @copyright  2021 Oswald Jaskolla
@@ -33,9 +33,11 @@ class qtype_mooch_renderer extends qtype_renderer {
         global $OUTPUT;
         /** @var qtype_mooch_question $question */
         $question = $qa->get_question();
-        
+       
         $this->require_chess_attempt($PAGE, $options);
-        
+
+        $response = ['answer' => $qa->get_last_qt_var('answer')];
+       
         $context = [
             'answer_field_name' => $qa->get_qt_field_name('answer'),
             'attempted_answer' => $qa->get_last_qt_var('answer'),
@@ -44,24 +46,26 @@ class qtype_mooch_renderer extends qtype_renderer {
             'readonly' => $options->readonly,
             'fen' => $question->fen,
             'correctness' => ($options->correctness == question_display_options::VISIBLE),
-            'correct_answer' => $question->get_correct_response()['answer']
+            'correct_answer' => $question->get_correct_response()['answer'],
+            'show_feedback' => $options->feedback,
+            'feedback' => $question->get_matching_answer($response)->feedback
         ];
-        
+       
         $html = parent::formulation_and_controls($qa, $options);
         $html .= $OUTPUT->render_from_template('qtype_mooch/show', $context);
-        
+       
         return $html;
     }
 
     /**
      * Include the javascript the is needed to show the chess board.
-     * 
+     *
      * @param moodle_page $page The page on which the chess board is displayed
      * @param question_display_options $options Display options
      */
     private function require_chess_attempt(moodle_page $page, question_display_options $options) {
         global $CFG;
-        
+       
         if (self::$js_included) {
             return;
         } else {
@@ -99,7 +103,7 @@ class qtype_mooch_renderer extends qtype_renderer {
         }
 
         $plugin_url = "$CFG->wwwroot/question/type/mooch";
-        
+       
         $thmgr = new ThemeManager($CFG);
         $jsmgr = new JavaScriptManager($page, $plugin_url);
         $jsmgr->call("js/chess-question-attempt.js", 'init', [$config, $thmgr->Theme]);

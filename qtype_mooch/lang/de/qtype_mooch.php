@@ -2,7 +2,7 @@
 
 /**
  * German language file with formal language for chess question plugin.
- * 
+ *
  * @package    qtype
  * @subpackage mooch
  * @copyright  2021 Oswald Jaskolla

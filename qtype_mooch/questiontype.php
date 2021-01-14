@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Definition of the qtype_mooch class.
@@ -25,7 +25,7 @@ class qtype_mooch extends question_type {
     public function extra_question_fields() {
         return ['question_mooch', 'fen'];
     }
-    
+   
     /**
      * {@inheritDoc}
      * @see question_type::questionid_column_name()
@@ -33,7 +33,7 @@ class qtype_mooch extends question_type {
     public function questionid_column_name() {
         return 'questionid';
     }
-    
+   
     /**
      * {@inheritDoc}
      * @see question_type::display_question_editing_page()
@@ -65,7 +65,7 @@ class qtype_mooch extends question_type {
 
         parent::display_question_editing_page($mform, $question, $wizardnow);
     }
-    
+   
     /**
      * {@inheritDoc}
      * @see question_type::save_question_options()
@@ -74,14 +74,14 @@ class qtype_mooch extends question_type {
         parent::save_question_options($question);
         $this->save_question_answers($question);
     }
-    
+   
     /**
      * {@inheritDoc}
      * @see question_type::initialise_question_instance()
      */
     protected function initialise_question_instance(question_definition $question, $questiondata) {
         parent::initialise_question_instance($question, $questiondata);
-    
+   
         $question->answers = array();
         if (empty($questiondata->options->answers)) {
             return;

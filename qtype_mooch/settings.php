@@ -2,22 +2,22 @@
 
 /**
  * Admin settings for the chess question type.
- * 
+ *
  * Settings:
- * 
+ *
  *  - qtype_mooch_themetype ('default' | 'builtin')
  *    Whether to uses the default theme or one of the builtin ones.
- *    
+ *   
  *  - qtype_mooch_builtin_pieceset (string)
  *    A subdirectory of question/type/mooch/pix/theme/pieces that contains SVG
  *    for the pieces.
- *    
+ *   
  *  - qtype_mooch_builtin_board (string)
  *    The name of a file in question/type/mooch/pix/theme/board without file
  *    extension. A file extension of '.svg' will be added to find the board
- *    when it should be displayed. 
- *  
- *  
+ *    when it should be displayed.
+ * 
+ * 
  * @package    qtype
  * @subpackage mooch
  * @copyright  2021 Oswald Jaskolla
@@ -43,7 +43,7 @@ if ($ADMIN->fulltree) {
             // 'custom' => new lang_string('themetype_custom', 'qtype_mooch'),
         ]
     ));
-    
+   
     $values = array_filter(scandir(__DIR__.'/pix/theme/pieces'), function($v) {return $v[0] !== '.';});
     $items = array_map(function($v) {return ucfirst($v);}, $values);
     $settings->add(new admin_setting_configselect(
@@ -67,7 +67,7 @@ if ($ADMIN->fulltree) {
        ));
        $settings->hide_if($name, 'qtype_mooch_builtin_pieceset', 'neq', $value);
        $settings->hide_if($name, 'qtype_mooch_themetype', 'neq', 'builtin');
-    }    
+    }   
     $settings->hide_if('qtype_mooch_builtin_pieceset', 'qtype_mooch_themetype', 'neq', 'builtin');
 
     $values = array_filter(scandir(__DIR__.'/pix/theme/boards'), function($v) {return $v[0] !== '.';});
@@ -92,7 +92,7 @@ if ($ADMIN->fulltree) {
         $settings->hide_if($name, 'qtype_mooch_builtin_board', 'neq', $value);
         $settings->hide_if($name, 'qtype_mooch_themetype', 'neq', 'builtin');
     }
-    
+   
 //     $settings->add(new admin_setting_configtext(
 //         'qtype_mooch_custom_pieceset',
 //         new lang_string('pieceset', 'qtype_mooch'),

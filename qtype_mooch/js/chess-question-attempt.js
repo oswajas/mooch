@@ -4,11 +4,11 @@ import { Fen } from "./Fen.js";
 
 /**
  * @param config_default (object) Default configration object that is passed to the constructor of the chessboard.
- * @param theme (object) Information about which board and pieces to use 
+ * @param theme (object) Information about which board and pieces to use
  */
 export function init(config_default, theme) {
     ensureProperty(config_default, "drawable.pieces");
-    
+   
     let boards = document.querySelectorAll("[data-qtype-mooch-id-question-board]");
     for (let i = 0; i < boards.length; ++i) {
         let config = clone(config_default);
@@ -25,20 +25,20 @@ export function init(config_default, theme) {
 
         let cgwrap = document.createElement("DIV");
         chesswidget.appendChild(cgwrap);
-        
+       
         ensureProperty(config, "movable");
         config.movable.color = fen.color;
         config.fen = fen.position;
         config.turnColor = fen.color;
         let chessboard = new Chessground(cgwrap, config);
-        
+       
         setTheme(chesswidget, theme);
-        
+       
         if (!config.viewOnly) {
             ensureProperty(config, "movable.events");
             config.movable.events.after = (orig, dest, metadata) => onMove(chessboard, config, chesswidget, attempt, orig, dest, metadata);
         }
-        
+       
         if (answer) {
             ensureProperty(config, "drawable");
             if (isTrue(correct)) {
@@ -52,7 +52,7 @@ export function init(config_default, theme) {
                 ];
             }
         }
-        
+       
         chessboard.set(config);
 
         let reset = document.querySelector("[data-qtype-mooch-id-reset-button='" + uid + "']");
@@ -83,7 +83,7 @@ function onMove(chessboard, config, boardElement, input, orig, dest, _metadata) 
                 pieces.set(dest, promotedPiece);
                 chessboard.setPieces(pieces);
                 let letter = letters[promotedPiece.role].toUpperCase();
-                input.value = `${orig}-${dest}=${letter}`; 
+                input.value = `${orig}-${dest}=${letter}`;
             })
             .catch(() => {
                 chessboard.set(config);
@@ -106,16 +106,16 @@ function onReset(chessboard, config, input, fen) {
  * Show a modal Dialog that prompst for choosing a piece to promote a pawn to.
  *
  * @param board HTMLElement  The parent element of the dialog
- * @param color string The color that moved, either 'w' for White or 'b' for black 
+ * @param color string The color that moved, either 'w' for White or 'b' for black
  * @return Promise
  */
 function choosePromotionPiece(board, color, config) {
     return new Promise((onfulfilled, onrejected) => {
         let c = color.charAt(0);
-        
+       
         let btClose = document.createElement('BUTTON');
         btClose.innerHTML = "🗙";
-        
+       
         let title = document.createElement('DIV');
         title.style['text-align'] = 'right';
         title.appendChild(btClose);
@@ -189,7 +189,7 @@ function choosePromotionPiece(board, color, config) {
  *
  * @param chessboard The chessboard
  * @param _from The original square of the piece
- * @param to The destination square of the piece 
+ * @param to The destination square of the piece
  * @return boolean
  */
 function isPromotion(chessboard, _from, to) {
@@ -204,11 +204,11 @@ function isPromotion(chessboard, _from, to) {
  *
  * A move is considered a castling move if a king moves from its starting square
  * two squares to the side, a rook in that direction is on its starting square
- * and there are no pieces between the king and the rook.  
+ * and there are no pieces between the king and the rook. 
  *
  * @param chessboard The chessboard
  * @param from The original square of the piece
- * @param to The destination square of the piece 
+ * @param to The destination square of the piece
  * @return boolean
  */
 function isCastle(chessboard, from, to) {

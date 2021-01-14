@@ -4,7 +4,7 @@ import { clone, ensureProperty, setTheme } from "./util.js";
 
 /**
  * @param config_default (object) Default configration object that is passed to the constructor of the chessboard.
- * @param theme (object) Information about which board and pieces to use 
+ * @param theme (object) Information about which board and pieces to use
  */
 export function init(config_default, theme) {
     let fenfields = document.querySelectorAll("[data-qtype-mooch-id-fen-field]");
@@ -13,7 +13,7 @@ export function init(config_default, theme) {
         let config = clone(config_default);
         let fenfield = fenfields[i];
         let fenReset = new Fen(fenfield.value);
-        let fenCurrent = new Fen(fenfield.value); 
+        let fenCurrent = new Fen(fenfield.value);
         let uid = fenfield.getAttribute("data-qtype-mooch-id-fen-field");
         let chesswidget = document.querySelector(`[data-qtype-mooch-id-preview-board='${uid}']`);
         let dragboxElement = document.querySelector(`[data-qtype-mooch-id-dragbox='${uid}']`);
@@ -26,7 +26,7 @@ export function init(config_default, theme) {
             chesswidget.appendChild(chessboardElement);
 
             let radioWhite = turnElement.querySelector("[value='w']");
-            let radioBlack = turnElement.querySelector("[value='b']"); 
+            let radioBlack = turnElement.querySelector("[value='b']");
             (fenCurrent.color == "white" ? radioWhite : radioBlack).checked = true;
             let updateFenfield = (color) => {
                 fenCurrent.color = color;
@@ -67,7 +67,7 @@ export function init(config_default, theme) {
                     event.preventDefault();
                 });
             });
-            
+           
             chesswidget.querySelectorAll("[data-qtype-mooch-control]").forEach((element, _index) => {
                 switch (element.getAttribute("data-qtype-mooch-control")) {
                   case "clear":
@@ -75,7 +75,7 @@ export function init(config_default, theme) {
                         event.preventDefault();
                         fenCurrent.position = "8/8/8/8/8/8/8";
                         fenCurrent.color = "white";
-                        fenfield.value = fenCurrent.toString(); 
+                        fenfield.value = fenCurrent.toString();
                         config.fen = fenCurrent.position;
                         chessboard.set(config);
                         (fenCurrent.color == "white" ? radioWhite : radioBlack).checked = true;

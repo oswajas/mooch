@@ -13,35 +13,41 @@
       * none
 
     Data attributes required for JS:
-    
+   
       * none
 
     Context variables required for this template:
-    
+   
       * answer_field_name
         The value of the name attribute of the HTML element that stores the
         answer to the question
-          
+         
       * attempted_answer
         The answer that the user entered to solve the qustion
-      
+     
       * uid
         A unique identifier that separates HTML elements of this question from
         HTML elements of other questions displayed on the same page.
-          
+         
       * readonly
         Boolean indicating whether the qeustion should be displayed in readonly
         mode (i.e. whether no answer should be entered)
-          
+         
       * correctness
         Boolean value that indicates whether the correct anser should be
         displayed
-          
+         
       * correct_answer
         The correct answer
-      
+     
       * attempt_correct
-        Boolean indicating whether attempted_answer is correct 
+        Boolean indicating whether attempted_answer is correct
+     
+      * show_feedback
+        Boolean indicating whether to show feedback
+     
+      * feedback
+        The feedback
 }}
 <div class="ablock">
     <label for="{{answer_field_name}}">{{#str}}answer, moodle{{/str}}:</label>
@@ -59,11 +65,16 @@
             data-qtype-mooch-question-answer="{{correct_answer}}"
             data-qtype-mooch-question-correct="{{attempt_correct}}"
          {{/correctness}}>
-        <div class="move-marker" data-qtype-mooch-id-move-marker="{{uid}}"></div> 
+        <div class="move-marker" data-qtype-mooch-id-move-marker="{{uid}}"></div>
         {{^readonly}}
         <div class="resetbutton">
             <button data-qtype-mooch-id-reset-button="{{uid}}" class="btn btn-secondary">{{#str}}reset, moodle{{/str}}</button>
         </div>
         {{/readonly}}
     </div>
+    {{#show_feedback}}
+    <div class="feedback">
+        {{{feedback}}}
+    </div>
+    {{/show_feedback}}
 </div>

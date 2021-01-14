@@ -1,6 +1,6 @@
 /**
  * A class to handle Forsyth-Edwards notation.
- * 
+ *
  * @package    qtype
  * @subpackage mooch
  * @copyright  2021 Oswald Jaskolla
@@ -8,7 +8,7 @@
  */
 export class Fen {
     /**
-     * @param fen (string) A chess position in Forsyth-Edwards notation 
+     * @param fen (string) A chess position in Forsyth-Edwards notation
      */
     constructor(fen) {
         this.fen = fen;
@@ -35,7 +35,7 @@ export class Fen {
             break;
           default:
             throw fen;
-        }        
+        }       
     }
 
     /**
@@ -44,12 +44,12 @@ export class Fen {
     get fen() {
         return this.toString();
     }
-    
+
     toString() {
         let c = (value, alternative) => {
             return (typeof value !== 'undefined' && value) ? value : alternative;
         }
-         
+        
         let fen = this.position;
         fen += " " + c(this.color, "-").charAt(0);
         fen += " " + c(this.castles, "-");
@@ -87,12 +87,12 @@ Fen.validatePosition = (fen) => {
         if (files != 8) {
             valid = false;
             return;
-        } 
+        }
     });
-    
+
     if (ranks == 8 && valid) {
         return fen.trim();
     } else {
         return "";
-    }    
+    }   
 }

@@ -20,17 +20,17 @@ use \qtype_mooch\util\UID;
 class qtype_mooch_edit_form extends question_edit_form {
     /**
      * Add any question-type specific form fields.
-     * 
+     *
      * @param MoodleQuickForm $mform the form being built.
      * @see question_edit_form::definition_inner()
      */
     protected function definition_inner($mform) {
         /** @var renderer_base $OUTPUT */
         global $OUTPUT;
-        
+       
         $this->removeRequired($mform, 'name');
         $this->removeRequired($mform, 'questiontext');
-        
+       
         $uid = UID::weak();
 
         $chesswidget = $OUTPUT->render_from_template('qtype_mooch/edit', ['uid' => $uid]);
@@ -63,7 +63,7 @@ class qtype_mooch_edit_form extends question_edit_form {
      */
     public function qtype()
     {
-        return 'chess';
+        return 'mooch';
     }
 
     /**
@@ -76,7 +76,7 @@ class qtype_mooch_edit_form extends question_edit_form {
         if (!NotationUtility::validateFen($fromform['fen'])) {
             $errors['fen'] = get_string('invalidfen', 'qtype_mooch');
         }
-        
+       
         return $errors;
     }
 

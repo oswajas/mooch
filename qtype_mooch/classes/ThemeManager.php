@@ -13,10 +13,10 @@ namespace qtype_mooch;
 
 /**
  * Extract chessboard theme information from a configuration object.
- * 
+ *
  * @property-read array Theme Associative array with keys 'type',
  *  'builtin_pieces' and 'builtin_board'
- * @see settings.php  
+ * @see settings.php 
  */
 class ThemeManager {
     /**
@@ -41,6 +41,6 @@ class ThemeManager {
             throw new \coding_exception("Unknown property ThemeManager::$Property");
         }
     }
-    
+   
     private $cfg;
 }
